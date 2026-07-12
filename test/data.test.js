@@ -27,3 +27,30 @@ test('단계 순서는 1부터 연속되고 서비스 상태는 허용값만 사
     for (const service of item.services) assert.ok(allowed.has(service.status));
   }
 });
+
+test('대표 3개 사건은 공식문서 기반 심층 안내를 제공한다', () => {
+  const featured = ['birth', 'job-loss', 'elder-care'];
+  for (const slug of featured) {
+    const item = journeys.find(x => x.slug === slug);
+    assert.ok(item, slug);
+    assert.equal(item.depth, 'official-deep-dive', slug);
+    assert.ok(item.eligibility.length >= 3, slug);
+    assert.ok(item.deadlines.length >= 2, slug);
+    assert.ok(item.benefits.length >= 3, slug);
+    assert.ok(item.sources.length >= 5, slug);
+    assert.ok(item.sources.every(x => x.url.startsWith('https://')), slug);
+  }
+});
+
+test('대표 사건의 공식 근거는 일반 포털 홈이 아니라 구체 안내 또는 법령을 가리킨다', () => {
+  const featured = journeys.filter(x => x.depth === 'official-deep-dive');
+  const genericHomes = new Set([
+    'https://www.bokjiro.go.kr/',
+    'https://www.work24.go.kr/',
+    'https://www.longtermcare.or.kr/'
+  ]);
+  assert.equal(featured.length, 3);
+  for (const item of featured) {
+    assert.ok(item.sources.every(source => !genericHomes.has(source.url)), item.slug);
+  }
+});

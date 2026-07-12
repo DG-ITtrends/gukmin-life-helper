@@ -1,3 +1,5 @@
+import { deepDives } from './deep-dives.js';
+
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
 const step = (order, actor, action, output) => ({ order, actor, action, output });
@@ -84,3 +86,17 @@ export const journeys = [
     sources: [source('외교부 해외안전여행', 'https://www.0404.go.kr/'), source('영사민원24', 'https://consul.mofa.go.kr/')], disclaimer: '영사조력에는 현지 법령과 국제관계에 따른 범위·한계가 있습니다.'
   }
 ];
+
+for (const item of journeys) {
+  const detail = deepDives[item.slug];
+  if (!detail) continue;
+  item.depth = 'official-deep-dive';
+  item.eligibility = detail.officialCheckpoints.slice(0, 3).map((point) => point.fact);
+  item.deadlines = detail.deadlines;
+  item.benefits = item.services.map((entry) => entry.name);
+  item.sources = detail.officialSources.map((entry) => ({
+    name: entry.name,
+    url: entry.url,
+    status: `공식문서 확인 ${entry.checkedOn}`
+  }));
+}

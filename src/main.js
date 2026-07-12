@@ -1,5 +1,6 @@
 import './styles.css';
 import { journeys } from './data/journeys.js';
+import { deepDives } from './data/deep-dives.js';
 import { filterJourneys, summarizeJourneys, toggleComparison } from './lib/catalog.js';
 
 const root = document.querySelector('#main');
@@ -10,7 +11,7 @@ const stats = summarizeJourneys(journeys);
 const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (char) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char]));
 
 function renderCatalog() {
-  document.title = '대한민국 생활사건 지도';
+  document.title = '국민생활도우미';
   const filtered = filterJourneys(journeys, state);
   root.innerHTML = `
     <section class="hero">
@@ -72,16 +73,18 @@ function bindCatalogEvents() {
 function renderDetail(slug) {
   const item = journeys.find((journey) => journey.slug === slug);
   if (!item) { location.hash=''; return; }
-  document.title = `${item.title} | 생활사건 지도`;
+  document.title = `${item.title} | 국민생활도우미`;
+  const deepDive = deepDives[item.slug];
   root.innerHTML = `<article class="detail-shell">
     <nav class="detail-nav"><button class="back" onclick="location.hash=''">← 전체 사건</button><span>CASE ${item.icon} / 10</span></nav>
     <header class="detail-hero">
       <div><span class="eyebrow">${item.category} · LIFE EVENT</span><h1>${item.title}</h1><p>${item.summary}</p></div>
-      <div class="trust-box"><b>근거 상태</b>공식 안내 연결 · 내용 전문가 검수 전<br><small>기준일 ${item.asOf}</small></div>
+      <div class="trust-box"><b>근거 상태</b>${deepDive ? '공식문서 심화 대조 · 개인별 판정 제외' : '공식 안내 연결 · 내용 전문가 검수 전'}<br><small>기준일 ${item.asOf}</small></div>
     </header>
     <div class="detail-stats"><div><strong>${item.services.length}</strong><span>연결 서비스</span></div><div><strong>${item.steps.length}</strong><span>핵심 단계</span></div><div><strong>${item.reuseCandidates.length}</strong><span>재사용 후보정보</span></div><div><strong>${item.aiOpportunities.length}</strong><span>AI 개선기회</span></div></div>
     ${section('연결 서비스', '한 사건에서 함께 확인해야 할 서비스와 책임기관입니다.', `<table class="service-table"><thead><tr><th>서비스</th><th>담당·창구</th><th>행동</th></tr></thead><tbody>${item.services.map(s=>`<tr><td><strong>${s.name}</strong></td><td>${s.agency}</td><td><span class="tag">${s.status}</span></td></tr>`).join('')}</tbody></table>`)}
     ${section('국민 여정', '기관 조직도가 아니라 당사자가 밟는 순서로 재구성했습니다.', `<div class="flow">${item.steps.map(s=>`<div class="flow-step"><span class="order">STEP ${String(s.order).padStart(2,'0')}</span><h3>${s.action}</h3><p>${s.actor}</p><small>산출 · ${s.output}</small></div>`).join('')}</div>`)}
+    ${deepDive ? renderDeepDive(deepDive) : ''}
     ${section('서비스 진단', '반복 제출과 절차 단절을 데이터·AI 관점에서 봅니다.', `<div class="diagnosis"><div class="diag"><h3>↻ 다시 내는 정보</h3><ul>${item.reuseCandidates.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>△ 막히는 지점</h3><ul>${item.friction.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>✦ AI·제도개선 후보</h3><ul>${item.aiOpportunities.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`)}
     ${section('준비정보와 근거', '실제 신청 전에는 공식 원문에서 최신 요건을 다시 확인하세요.', `<h3>준비정보·서류</h3><ul>${item.documents.map(x=>`<li>${x}</li>`).join('')}</ul><h3>공식 출처</h3><div class="source-list">${item.sources.map(s=>`<a class="source-link" href="${s.url}" target="_blank" rel="noreferrer"><span>${s.name}</span><span>${s.status} ↗</span></a>`).join('')}</div><div class="notice"><strong>확인 필요</strong><br>${item.disclaimer}</div>`)}
   </article>`;
@@ -90,6 +93,14 @@ function renderDetail(slug) {
 }
 
 function section(title, intro, body) { return `<section class="section"><div class="section-grid"><div><h2>${title}</h2><p class="section-intro">${intro}</p></div><div>${body}</div></div></section>`; }
+
+function renderDeepDive(detail) {
+  return section('공식문서 심화', detail.verificationScope, `
+    <div class="verified-banner"><strong>대표 사건 심화 검토 완료</strong><span>공식 원문 기준 · 개인별 판정 제외</span></div>
+    <div class="checkpoint-list">${detail.officialCheckpoints.map((point, index) => `<article class="checkpoint"><span>${String(index + 1).padStart(2,'0')}</span><div><h3>${point.title}</h3><p><b>확인 사실</b> ${point.fact}</p><p><b>지금 할 일</b> ${point.action}</p></div></article>`).join('')}</div>
+    <div class="deep-meta"><div><h3>놓치면 안 되는 시점</h3><ul>${detail.deadlines.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>법적 근거</h3><ul>${detail.legalBasis.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>주의사항</h3><ul>${detail.cautions.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
+    <h3>심화 검토 공식 출처</h3><div class="source-list">${detail.officialSources.map(s=>`<a class="source-link" href="${s.url}" target="_blank" rel="noreferrer"><span>${s.name}</span><span>${s.checkedOn} 확인 ↗</span></a>`).join('')}</div>`);
+}
 
 function renderTray() {
   if (!state.compare.length) { tray.hidden=true; return; }
