@@ -90,13 +90,13 @@ export const journeys = [
 for (const item of journeys) {
   const detail = deepDives[item.slug];
   if (!detail) continue;
-  item.depth = 'official-deep-dive';
-  item.eligibility = detail.officialCheckpoints.slice(0, 3).map((point) => point.fact);
+  item.depth = detail.depth;
+  item.eligibility = detail.eligibility;
   item.deadlines = detail.deadlines;
-  item.benefits = item.services.map((entry) => entry.name);
+  item.benefits = detail.benefits;
   item.sources = detail.officialSources.map((entry) => ({
     name: entry.name,
     url: entry.url,
-    status: `공식문서 확인 ${entry.checkedOn}`
+    status: entry.status
   }));
 }

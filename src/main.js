@@ -97,9 +97,10 @@ function section(title, intro, body) { return `<section class="section"><div cla
 function renderDeepDive(detail) {
   return section('공식문서 심화', detail.verificationScope, `
     <div class="verified-banner"><strong>대표 사건 심화 검토 완료</strong><span>공식 원문 기준 · 개인별 판정 제외</span></div>
-    <div class="checkpoint-list">${detail.officialCheckpoints.map((point, index) => `<article class="checkpoint"><span>${String(index + 1).padStart(2,'0')}</span><div><h3>${point.title}</h3><p><b>확인 사실</b> ${point.fact}</p><p><b>지금 할 일</b> ${point.action}</p></div></article>`).join('')}</div>
+    <div class="checkpoint-list">${detail.officialCheckpoints.map((point, index) => `<article class="checkpoint"><span>${String(index + 1).padStart(2,'0')}</span><div><h3>확인사항 ${index + 1}</h3><p>${point}</p></div></article>`).join('')}</div>
+    <div class="deep-meta"><div><h3>신청 대상·요건</h3><ul>${detail.eligibility.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>주요 지원·급여</h3><ul>${detail.benefits.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
     <div class="deep-meta"><div><h3>놓치면 안 되는 시점</h3><ul>${detail.deadlines.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>법적 근거</h3><ul>${detail.legalBasis.map(x=>`<li>${x}</li>`).join('')}</ul></div><div><h3>주의사항</h3><ul>${detail.cautions.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
-    <h3>심화 검토 공식 출처</h3><div class="source-list">${detail.officialSources.map(s=>`<a class="source-link" href="${s.url}" target="_blank" rel="noreferrer"><span>${s.name}</span><span>${s.checkedOn} 확인 ↗</span></a>`).join('')}</div>`);
+    <h3>심화 검토 공식 출처</h3><div class="source-list">${detail.officialSources.map(s=>`<a class="source-link" href="${s.url}" target="_blank" rel="noreferrer"><span>${s.name}</span><span>${s.status} ↗</span></a>`).join('')}</div>`);
 }
 
 function renderTray() {
