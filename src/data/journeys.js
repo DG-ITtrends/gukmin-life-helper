@@ -1,5 +1,7 @@
 import { deepDives } from './deep-dives.js';
 import { birthServices } from './birth-services.js';
+import { jobLossServices } from './job-loss-services.js';
+import { elderCareServices } from './elder-care-services.js';
 
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
@@ -41,9 +43,9 @@ export const journeys = [
     sources: [source('정부24 전입신고 안내', 'https://www.gov.kr/'), source('찾기쉬운 생활법령정보', 'https://www.easylaw.go.kr/')], disclaimer: '임대차 신고와 확정일자 적용 여부는 계약 형태와 지역 등을 확인해야 합니다.'
   },
   {
-    slug: 'job-loss', icon: '03', title: '일자리를 잃었어요', category: '일자리·사업', summary: '고용보험 확인, 구직등록, 급여 신청과 재취업 지원을 시간순으로 안내합니다.',
-    asOf: '2026-07-12', agencies: ['고용24', '고용센터', '국민건강보험공단'], keywords: ['실업급여', '구직급여', '퇴직'],
-    services: [service('고용보험 이직확인', '고용24'), service('구직신청', '고용24', '신청'), service('구직급여 수급자격 인정', '고용센터', '신청'), service('건강보험 자격·보험료 확인', '국민건강보험공단')],
+    slug: 'job-loss', icon: '03', title: '일자리를 잃었어요', category: '일자리·사업', summary: '퇴직정산과 고용보험 확인부터 구직급여·재취업·사회보험·긴급생계까지 조건별로 안내합니다.',
+    asOf: '2026-07-12', agencies: ['고용24·고용복지플러스센터', '국민건강보험공단', '국민연금공단', '시·군·구 긴급복지 담당'], keywords: ['실업급여', '구직급여', '퇴직', '임의계속가입', '실업크레딧', '긴급복지'],
+    services: jobLossServices,
     steps: [step(1, '퇴직자', '이직사유·피보험기간 확인', '이직확인 정보'), step(2, '퇴직자', '구직등록과 교육 이수', '구직등록'), step(3, '고용센터', '수급자격 심사', '인정·불인정'), step(4, '수급자', '재취업활동 및 실업인정', '급여·취업지원')],
     documents: ['이직확인 관련 정보', '신분증', '본인계좌'], reuseCandidates: ['고용보험 가입이력', '이직정보', '소득정보'], friction: ['회사 제출정보와 신청인의 인식이 다르면 초기 처리가 지연될 수 있음'], aiOpportunities: ['이직 사유별 준비사항 설명', '실업인정 일정·활동 증빙 점검'],
     sources: [source('고용24', 'https://www.work24.go.kr/'), source('고용보험법', 'https://www.law.go.kr/법령/고용보험법')], disclaimer: '수급자격과 기간은 가입이력·이직사유·재취업활동에 따라 달라집니다.'
@@ -65,9 +67,9 @@ export const journeys = [
     sources: [source('복지로 장애인 서비스', 'https://www.bokjiro.go.kr/'), source('국민연금공단 장애등록심사', 'https://www.nps.or.kr/')], disclaimer: '장애등록과 개별 급여·서비스의 자격 기준은 서로 다릅니다.'
   },
   {
-    slug: 'elder-care', icon: '06', title: '부모님 돌봄이 필요해졌어요', category: '가족·돌봄', summary: '장기요양 인정, 건강·돌봄 서비스, 가족의 돌봄 부담을 함께 살펴봅니다.',
-    asOf: '2026-07-12', agencies: ['국민건강보험공단', '시·군·구', '복지로'], keywords: ['장기요양', '노인돌봄', '요양'],
-    services: [service('장기요양 인정 신청', '국민건강보험공단', '신청'), service('방문조사·등급판정', '국민건강보험공단', '연계'), service('재가·시설급여 이용', '장기요양기관'), service('노인맞춤돌봄 등 지역서비스 확인', '시·군·구')],
+    slug: 'elder-care', icon: '06', title: '부모님 돌봄이 필요해졌어요', category: '가족·돌봄', summary: '장기요양 판정 전후, 재가·시설·치매·안전·의료비·가족돌봄을 상황별로 연결합니다.',
+    asOf: '2026-07-12', agencies: ['국민건강보험공단', '시·군·구 통합돌봄 담당', '치매안심센터', '고용노동부'], keywords: ['장기요양', '노인돌봄', '요양', '치매', '통합돌봄', '가족돌봄휴가'],
+    services: elderCareServices,
     steps: [step(1, '본인·가족', '일상생활 수행 어려움과 건강상태 확인', '돌봄 필요 목록'), step(2, '공단', '신청 접수·방문조사', '인정조사'), step(3, '등급판정위원회', '등급 및 급여 여부 결정', '인정서·이용계획'), step(4, '가족·기관', '서비스 선택·계약·이용', '돌봄 제공')],
     documents: ['장기요양 신청서', '의사소견서(대상에 따라)', '신분·건강보험 정보'], reuseCandidates: ['건강보험 자격', '건강·진료 정보', '가구·주소 정보'], friction: ['장기요양과 지자체 돌봄서비스의 차이를 가족이 직접 구분해야 함'], aiOpportunities: ['돌봄 필요도 기반 제도 구분 설명', '기관 비교 체크리스트 생성'],
     sources: [source('노인장기요양보험', 'https://www.longtermcare.or.kr/'), source('복지로', 'https://www.bokjiro.go.kr/')], disclaimer: '등급판정과 본인부담, 이용가능 서비스는 개인별 결과에 따릅니다.'

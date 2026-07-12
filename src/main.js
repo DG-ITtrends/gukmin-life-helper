@@ -82,7 +82,7 @@ function renderDetail(slug) {
       <div class="trust-box"><b>근거 상태</b>${deepDive ? '공식문서 심화 대조 · 개인별 판정 제외' : '공식 안내 연결 · 내용 전문가 검수 전'}<br><small>기준일 ${item.asOf}</small></div>
     </header>
     <div class="detail-stats"><div><strong>${item.services.length}</strong><span>연결 서비스</span></div><div><strong>${item.steps.length}</strong><span>핵심 단계</span></div><div><strong>${item.reuseCandidates.length}</strong><span>재사용 후보정보</span></div><div><strong>${item.aiOpportunities.length}</strong><span>AI 개선기회</span></div></div>
-    ${section('연결 서비스', item.slug === 'birth' ? '기본 절차와 조건부 지원을 나누고, 각 서비스의 적용조건부터 공식 원문까지 표시합니다.' : '서비스마다 책임기관·신청창구·해야 할 일·처리결과를 분리했습니다.', renderServices(item))}
+    ${section('연결 서비스', item.services.every(s => s.requirement && s.deadline && s.sourceUrl) ? '기본 경로와 조건부 지원을 나누고, 적용조건·신청기한·책임기관·행동·결과·공식 원문을 표시합니다.' : '서비스마다 책임기관·신청창구·해야 할 일·처리결과를 분리했습니다.', renderServices(item))}
     ${section('국민 여정', '기관 조직도가 아니라 당사자가 밟는 순서로 재구성했습니다.', `<div class="flow">${item.steps.map(s=>`<div class="flow-step"><span class="order">STEP ${String(s.order).padStart(2,'0')}</span><h3>${s.action}</h3><p>${s.actor}</p><small>산출 · ${s.output}</small></div>`).join('')}</div>`)}
     ${deepDive ? renderDeepDive(deepDive) : ''}
     ${section('서비스 진단', '반복 제출과 절차 단절을 데이터·AI 관점에서 봅니다.', `<div class="diagnosis"><div class="diag"><h3>↻ 다시 내는 정보</h3><ul>${item.reuseCandidates.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>△ 막히는 지점</h3><ul>${item.friction.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>✦ AI·제도개선 후보</h3><ul>${item.aiOpportunities.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`)}
@@ -93,13 +93,20 @@ function renderDetail(slug) {
 }
 
 function renderServices(item) {
-  if (item.slug !== 'birth') {
+  if (!item.services.every(s => s.audiences && s.requirement && s.deadline && s.sourceUrl)) {
     return `<div class="service-table-wrap"><table class="service-table detailed-services"><thead><tr><th>서비스</th><th>책임기관</th><th>신청창구</th><th>국민이 할 일</th><th>처리결과</th></tr></thead><tbody>${item.services.map(s=>`<tr><td><strong>${s.name}</strong><br><span class="tag">${s.status}</span></td><td>${s.agency}</td><td>${s.channel || '해당 서비스 공식 안내에서 확인'}</td><td>${s.action || s.note || '신청 필요 여부 확인'}</td><td>${s.result || '처리 결과 개별 확인'}</td></tr>`).join('')}</tbody></table></div>`;
   }
-  const universal = item.services.filter(s => s.audiences.includes('모든 출생가구'));
-  const conditional = item.services.filter(s => !s.audiences.includes('모든 출생가구'));
+  const configs = {
+    birth: { base: '모든 출생가구', first: '모든 출생가구가 확인', firstDesc: '출생신고 후 기본적으로 확인할 신분·급여·건강·생활비 지원입니다.', secondDesc: '어린이집 이용, 다자녀, 저소득, 장애, 한부모, 미숙아 등 해당 조건일 때 추가합니다.' },
+    'job-loss': { firstNames: ['고용보험 이직확인서 처리 확인','구직신청·수급자격 온라인 교육','구직급여 수급자격 인정','자발적 이직 정당사유 확인','실업인정·재취업활동 신고'], first: '퇴직 직후 기본 경로', firstDesc: '이직정보 확인부터 구직등록·구직급여 절차까지 우선 점검합니다.', secondDesc: '소득·재취업·사회보험·체불 여부에 따라 추가합니다.' },
+    'elder-care': { firstNames: ['장기요양 인정 신청','장기요양 인정조사·등급판정','의료·요양·돌봄 통합지원'], first: '돌봄 필요 발생 시 기본 경로', firstDesc: '장기요양 신청·판정과 의료·돌봄 통합지원 경로를 먼저 확인합니다.', secondDesc: '재가·시설·치매·안전·의료비·가족돌봄 상황에 따라 추가합니다.' }
+  };
+  const config = configs[item.slug] || { base: item.services[0].audiences[0], first: '기본 확인', firstDesc: '우선 확인할 서비스입니다.', secondDesc: '개인 상황에 따라 추가 확인합니다.' };
+  const isFirst = (service) => config.firstNames ? config.firstNames.includes(service.name) : service.audiences.includes(config.base);
+  const first = item.services.filter(isFirst);
+  const conditional = item.services.filter(s => !isFirst(s));
   const cards = (services) => `<div class="service-cards">${services.map(s=>`<article class="service-card"><div class="service-card-head"><div><span class="eyebrow">${s.status}</span><h3>${s.name}</h3></div><div class="audience-tags">${s.audiences.map(a=>`<span>${a}</span>`).join('')}</div></div><dl><div><dt>적용조건</dt><dd>${s.requirement}</dd></div><div><dt>신청기한</dt><dd>${s.deadline}</dd></div><div><dt>책임기관</dt><dd>${s.agency}</dd></div><div><dt>신청창구</dt><dd>${s.channel}</dd></div><div><dt>국민이 할 일</dt><dd>${s.action}</dd></div><div><dt>처리결과</dt><dd>${s.result}</dd></div></dl><a class="official-link" href="${s.sourceUrl}" target="_blank" rel="noreferrer">공식 원문 확인 ↗</a></article>`).join('')}</div>`;
-  return `<div class="service-group"><div class="group-title"><span>01</span><div><h3>모든 출생가구가 확인</h3><p>출생신고 후 기본적으로 확인할 신분·급여·건강·생활비 지원입니다.</p></div></div>${cards(universal)}</div><div class="service-group conditional"><div class="group-title"><span>02</span><div><h3>상황별 추가 확인</h3><p>어린이집 이용, 다자녀, 저소득, 장애, 한부모, 미숙아 등 해당 조건일 때 추가합니다.</p></div></div>${cards(conditional)}</div>`;
+  return `<div class="service-group"><div class="group-title"><span>01</span><div><h3>${config.first}</h3><p>${config.firstDesc}</p></div></div>${cards(first)}</div><div class="service-group conditional"><div class="group-title"><span>02</span><div><h3>상황별 추가 확인</h3><p>${config.secondDesc}</p></div></div>${cards(conditional)}</div>`;
 }
 
 function section(title, intro, body) { return `<section class="section"><div class="section-grid"><div><h2>${title}</h2><p class="section-intro">${intro}</p></div><div>${body}</div></div></section>`; }

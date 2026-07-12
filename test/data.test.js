@@ -129,3 +129,20 @@ test('출생 사건은 신생아 검사와 고위험 임산부 지원을 별도 
   assert.ok(names.has('고위험 임산부 의료비 지원'));
   assert.ok(!names.has('선천성대사이상·난청 검사 및 환아관리'));
 });
+
+test('실직·부모님돌봄 사건은 조건별 공식 서비스 카드 필드를 갖는다', () => {
+  const expected = {
+    'job-loss': ['구직급여 수급자격 인정', '건강보험 임의계속가입', '국민연금 실업크레딧', '긴급복지 생계지원', '체불임금 신고·간이대지급금'],
+    'elder-care': ['장기요양 인정 신청', '재가급여 이용', '치매안심센터 조기검진·등록관리', '의료·요양·돌봄 통합지원', '가족돌봄휴가·휴직']
+  };
+  for (const [slug, required] of Object.entries(expected)) {
+    const item = journeys.find(x => x.slug === slug);
+    assert.ok(item.services.length >= 11, slug);
+    const names = new Set(item.services.map(x => x.name));
+    for (const name of required) assert.ok(names.has(name), `${slug}: ${name}`);
+    for (const entry of item.services) {
+      for (const key of ['audiences','requirement','deadline','agency','channel','action','result','sourceUrl']) assert.ok(entry[key], `${slug}/${entry.name}: ${key}`);
+      assert.match(entry.sourceUrl, /^https:\/\//);
+    }
+  }
+});
