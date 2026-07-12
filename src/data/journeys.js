@@ -6,6 +6,9 @@ import { expandedCases, expandedBySlug } from './expanded-cases.js';
 import { additionalCases } from './additional-cases.js';
 import { cases31to50 } from './cases-31-50.js';
 import { attachDocumentRequirements } from './document-requirements.js';
+import { startupCases01to03 } from './startup-cases-01-03.js';
+import { startupCases04to07 } from './startup-cases-04-07.js';
+import { startupCases08to10 } from './startup-cases-08-10.js';
 
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
@@ -120,6 +123,9 @@ const assembledJourneys = [
   ...cases31to50
 ];
 
+const startupSubcases = [...startupCases01to03, ...startupCases04to07, ...startupCases08to10];
+const journeysWithStartupSubcases = assembledJourneys.flatMap(item => item.slug === 'startup' ? [item, ...startupSubcases] : [item]);
+
 const canonicalCategory = (category) => {
   if (/교육|청년/.test(category)) return '교육·청년';
   if (/주거|재산/.test(category)) return '주거·재산';
@@ -131,7 +137,11 @@ const canonicalCategory = (category) => {
   return '가족·돌봄';
 };
 
-export const journeys = assembledJourneys.map(item => attachDocumentRequirements({ ...item, category: canonicalCategory(item.category) }));
+export const journeys = journeysWithStartupSubcases.map(item => attachDocumentRequirements({
+  ...item,
+  category: canonicalCategory(item.category),
+  sources: item.sources || item.deepDive?.officialSources || [],
+}));
 
 for (const item of journeys) {
   const detail = deepDives[item.slug];

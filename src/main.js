@@ -82,6 +82,7 @@ function renderDetail(slug) {
       <div class="trust-box"><b>근거 상태</b>${deepDive ? '공식문서 심화 대조 · 개인별 판정 제외' : '공식 안내 연결 · 내용 전문가 검수 전'}<br><small>기준일 ${item.asOf}</small></div>
     </header>
     <div class="detail-stats"><div><strong>${item.services.length}</strong><span>연결 서비스</span></div><div><strong>${item.steps.length}</strong><span>핵심 단계</span></div><div><strong>${item.reuseCandidates.length}</strong><span>재사용 후보정보</span></div><div><strong>${item.aiOpportunities.length}</strong><span>AI 개선기회</span></div></div>
+    ${item.slug === 'startup' ? renderStartupChoices() : ''}
     ${section('연결 서비스', item.services.every(s => s.requirement && s.deadline && s.sourceUrl) ? '기본 경로와 조건부 지원을 나누고, 적용조건·신청기한·책임기관·행동·결과·공식 원문을 표시합니다.' : '서비스마다 책임기관·신청창구·해야 할 일·처리결과를 분리했습니다.', renderServices(item))}
     ${section('국민 여정', '기관 조직도가 아니라 당사자가 밟는 순서로 재구성했습니다.', `<div class="flow">${item.steps.map(s=>`<div class="flow-step"><span class="order">STEP ${String(s.order).padStart(2,'0')}</span><h3>${s.action}</h3><p>${s.actor}</p><small>산출 · ${s.output}</small></div>`).join('')}</div>`)}
     ${deepDive ? renderDeepDive(deepDive) : ''}
@@ -108,6 +109,11 @@ function renderServices(item) {
   const conditional = item.services.filter(s => !isFirst(s));
   const cards = (services) => `<div class="service-cards">${services.map(s=>`<article class="service-card"><div class="service-card-head"><div><span class="eyebrow">${s.status}</span><h3>${s.name}</h3></div><div class="audience-tags">${s.audiences.map(a=>`<span>${a}</span>`).join('')}</div></div><dl><div><dt>적용조건</dt><dd>${s.requirement}</dd></div><div><dt>신청기한</dt><dd>${s.deadline}</dd></div><div><dt>책임기관</dt><dd>${s.agency}</dd></div><div><dt>신청창구</dt><dd>${s.channel}</dd></div><div><dt>국민이 할 일</dt><dd>${s.action}</dd></div><div><dt>처리결과</dt><dd>${s.result}</dd></div></dl>${renderServiceDocuments(s)}<a class="official-link" href="${s.sourceUrl}" target="_blank" rel="noreferrer">공식 원문 확인 ↗</a></article>`).join('')}</div>`;
   return `<div class="service-group"><div class="group-title"><span>01</span><div><h3>${config.first}</h3><p>${config.firstDesc}</p></div></div>${cards(first)}</div><div class="service-group conditional"><div class="group-title"><span>02</span><div><h3>상황별 추가 확인</h3><p>${config.secondDesc}</p></div></div>${cards(conditional)}</div>`;
+}
+
+function renderStartupChoices() {
+  const choices = journeys.filter(item => /^36-\d{2}$/.test(item.icon));
+  return section('어떤 업종을 시작하나요?', '실제 영업형태를 선택하면 업종별 인허가·시설·교육·제출서류를 확인할 수 있습니다.', `<div class="startup-choices">${choices.map(item=>`<a href="#case/${item.slug}"><span>${item.icon}</span><strong>${item.title}</strong><small>${item.services.length}개 서비스 · 제출서류 ${item.documentCoverage.mapped}/${item.documentCoverage.total}</small></a>`).join('')}</div>`);
 }
 
 function documentList(title, values) {
