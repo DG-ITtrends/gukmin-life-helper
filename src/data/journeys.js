@@ -5,6 +5,7 @@ import { elderCareServices } from './elder-care-services.js';
 import { expandedCases, expandedBySlug } from './expanded-cases.js';
 import { additionalCases } from './additional-cases.js';
 import { cases31to50 } from './cases-31-50.js';
+import { attachDocumentRequirements } from './document-requirements.js';
 
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
@@ -130,7 +131,7 @@ const canonicalCategory = (category) => {
   return '가족·돌봄';
 };
 
-export const journeys = assembledJourneys.map(item => ({ ...item, category: canonicalCategory(item.category) }));
+export const journeys = assembledJourneys.map(item => attachDocumentRequirements({ ...item, category: canonicalCategory(item.category) }));
 
 for (const item of journeys) {
   const detail = deepDives[item.slug];

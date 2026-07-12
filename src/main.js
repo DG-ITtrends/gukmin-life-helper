@@ -86,7 +86,8 @@ function renderDetail(slug) {
     ${section('국민 여정', '기관 조직도가 아니라 당사자가 밟는 순서로 재구성했습니다.', `<div class="flow">${item.steps.map(s=>`<div class="flow-step"><span class="order">STEP ${String(s.order).padStart(2,'0')}</span><h3>${s.action}</h3><p>${s.actor}</p><small>산출 · ${s.output}</small></div>`).join('')}</div>`)}
     ${deepDive ? renderDeepDive(deepDive) : ''}
     ${section('서비스 진단', '반복 제출과 절차 단절을 데이터·AI 관점에서 봅니다.', `<div class="diagnosis"><div class="diag"><h3>↻ 다시 내는 정보</h3><ul>${item.reuseCandidates.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>△ 막히는 지점</h3><ul>${item.friction.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>✦ AI·제도개선 후보</h3><ul>${item.aiOpportunities.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`)}
-    ${section('준비정보와 근거', '실제 신청 전에는 공식 원문에서 최신 요건을 다시 확인하세요.', `<h3>준비정보·서류</h3><ul>${item.documents.map(x=>`<li>${x}</li>`).join('')}</ul><h3>공식 출처</h3><div class="source-list">${item.sources.map(s=>`<a class="source-link" href="${s.url}" target="_blank" rel="noreferrer"><span>${s.name}</span><span>${s.status} ↗</span></a>`).join('')}</div><div class="notice"><strong>확인 필요</strong><br>${item.disclaimer}</div>`)}
+    ${section('사건 전체 준비서류', '서비스별 공식 구비서류를 합치고 중복을 제거한 체크리스트입니다.', renderCaseDocuments(item))}
+    ${section('준비정보와 근거', '실제 신청 전에는 공식 원문에서 최신 요건을 다시 확인하세요.', `<h3>기본 준비정보</h3><ul>${item.documents.map(x=>`<li>${x}</li>`).join('')}</ul><h3>공식 출처</h3><div class="source-list">${item.sources.map(s=>`<a class="source-link" href="${s.url}" target="_blank" rel="noreferrer"><span>${s.name}</span><span>${s.status} ↗</span></a>`).join('')}</div><div class="notice"><strong>확인 필요</strong><br>${item.disclaimer}</div>`)}
   </article>`;
   tray.hidden = true;
   scrollTo(0,0);
@@ -105,8 +106,30 @@ function renderServices(item) {
   const isFirst = (service) => config.firstNames ? config.firstNames.includes(service.name) : service.audiences.includes(config.base);
   const first = item.services.filter(isFirst);
   const conditional = item.services.filter(s => !isFirst(s));
-  const cards = (services) => `<div class="service-cards">${services.map(s=>`<article class="service-card"><div class="service-card-head"><div><span class="eyebrow">${s.status}</span><h3>${s.name}</h3></div><div class="audience-tags">${s.audiences.map(a=>`<span>${a}</span>`).join('')}</div></div><dl><div><dt>적용조건</dt><dd>${s.requirement}</dd></div><div><dt>신청기한</dt><dd>${s.deadline}</dd></div><div><dt>책임기관</dt><dd>${s.agency}</dd></div><div><dt>신청창구</dt><dd>${s.channel}</dd></div><div><dt>국민이 할 일</dt><dd>${s.action}</dd></div><div><dt>처리결과</dt><dd>${s.result}</dd></div></dl><a class="official-link" href="${s.sourceUrl}" target="_blank" rel="noreferrer">공식 원문 확인 ↗</a></article>`).join('')}</div>`;
+  const cards = (services) => `<div class="service-cards">${services.map(s=>`<article class="service-card"><div class="service-card-head"><div><span class="eyebrow">${s.status}</span><h3>${s.name}</h3></div><div class="audience-tags">${s.audiences.map(a=>`<span>${a}</span>`).join('')}</div></div><dl><div><dt>적용조건</dt><dd>${s.requirement}</dd></div><div><dt>신청기한</dt><dd>${s.deadline}</dd></div><div><dt>책임기관</dt><dd>${s.agency}</dd></div><div><dt>신청창구</dt><dd>${s.channel}</dd></div><div><dt>국민이 할 일</dt><dd>${s.action}</dd></div><div><dt>처리결과</dt><dd>${s.result}</dd></div></dl>${renderServiceDocuments(s)}<a class="official-link" href="${s.sourceUrl}" target="_blank" rel="noreferrer">공식 원문 확인 ↗</a></article>`).join('')}</div>`;
   return `<div class="service-group"><div class="group-title"><span>01</span><div><h3>${config.first}</h3><p>${config.firstDesc}</p></div></div>${cards(first)}</div><div class="service-group conditional"><div class="group-title"><span>02</span><div><h3>상황별 추가 확인</h3><p>${config.secondDesc}</p></div></div>${cards(conditional)}</div>`;
+}
+
+function documentList(title, values) {
+  return values?.length ? `<div><h4>${title}</h4><ul>${values.map(x=>`<li>${x}</li>`).join('')}</ul></div>` : '';
+}
+
+function renderServiceDocuments(service) {
+  const docs = service.documentRequirements;
+  if (!docs) return '';
+  const badge = docs.verificationStatus === 'verified' ? '공식 구비서류 확인' : '기관·유형별 추가 확인 필요';
+  return `<div class="service-documents"><h4>제출서류 <small>${badge}</small></h4>${documentList('직접 제출',docs.required)}${documentList('조건부 추가',docs.conditional)}${documentList('기관 확인·제출 생략 가능',docs.autoChecked)}${documentList('처리 후 받는 문서',docs.outputs)}<a class="official-link" href="${docs.sourceUrl}" target="_blank" rel="noreferrer">구비서류 근거 확인 ↗</a></div>`;
+}
+
+function renderCaseDocuments(item) {
+  const groups = { required:new Set(), conditional:new Set(), autoChecked:new Set(), outputs:new Set() };
+  for (const service of item.services) {
+    const docs = service.documentRequirements;
+    if (!docs) continue;
+    for (const key of Object.keys(groups)) for (const value of docs[key] || []) groups[key].add(value);
+  }
+  const coverage=item.documentCoverage || { total:item.services.length, mapped:0, verified:0 };
+  return `<div class="document-summary"><p><strong>${coverage.total}개 서비스 중 ${coverage.mapped}개 서류 연결</strong> · 공식 목록 확정 ${coverage.verified}개 · 나머지는 기관·신청유형별 최종 확인 필요</p>${documentList('직접 제출', [...groups.required])}${documentList('조건에 따라 추가', [...groups.conditional])}${documentList('기관 확인·공동이용', [...groups.autoChecked])}${documentList('신청 후 받는 문서', [...groups.outputs])}</div>`;
 }
 
 function section(title, intro, body) { return `<section class="section"><div class="section-grid"><div><h2>${title}</h2><p class="section-intro">${intro}</p></div><div>${body}</div></div></section>`; }
