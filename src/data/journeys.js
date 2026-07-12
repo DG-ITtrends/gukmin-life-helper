@@ -3,6 +3,8 @@ import { birthServices } from './birth-services.js';
 import { jobLossServices } from './job-loss-services.js';
 import { elderCareServices } from './elder-care-services.js';
 import { expandedCases, expandedBySlug } from './expanded-cases.js';
+import { additionalCases } from './additional-cases.js';
+import { cases31to50 } from './cases-31-50.js';
 
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
@@ -112,7 +114,9 @@ const baseJourneys = [
 const existingSlugs = new Set(baseJourneys.map(item => item.slug));
 export const journeys = [
   ...baseJourneys.map(item => expandedBySlug[item.slug] ? { ...item, ...expandedBySlug[item.slug] } : item),
-  ...expandedCases.filter(item => !existingSlugs.has(item.slug))
+  ...expandedCases.filter(item => !existingSlugs.has(item.slug)),
+  ...additionalCases,
+  ...cases31to50
 ];
 
 for (const item of journeys) {

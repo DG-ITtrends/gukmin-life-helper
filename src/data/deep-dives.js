@@ -1,4 +1,6 @@
 import { expandedDeepDives } from './expanded-cases.js';
+import { additionalDeepDives } from './additional-cases.js';
+import { deep31to50 } from './cases-31-50.js';
 
 const official = (name, url) => ({ name, url, status: '공식 원문 확인' });
 
@@ -110,4 +112,4 @@ const baseDeepDives = {
   }
 };
 
-export const deepDives = { ...expandedDeepDives, ...baseDeepDives };
+export const deepDives = { ...expandedDeepDives, ...additionalDeepDives, ...deep31to50, ...baseDeepDives };
