@@ -82,7 +82,7 @@ function renderDetail(slug) {
       <div class="trust-box"><b>근거 상태</b>${deepDive ? '공식문서 심화 대조 · 개인별 판정 제외' : '공식 안내 연결 · 내용 전문가 검수 전'}<br><small>기준일 ${item.asOf}</small></div>
     </header>
     <div class="detail-stats"><div><strong>${item.services.length}</strong><span>연결 서비스</span></div><div><strong>${item.steps.length}</strong><span>핵심 단계</span></div><div><strong>${item.reuseCandidates.length}</strong><span>재사용 후보정보</span></div><div><strong>${item.aiOpportunities.length}</strong><span>AI 개선기회</span></div></div>
-    ${section('연결 서비스', '서비스마다 책임기관·신청창구·해야 할 일·처리결과를 분리했습니다.', `<div class="service-table-wrap"><table class="service-table detailed-services"><thead><tr><th>서비스</th><th>책임기관</th><th>신청창구</th><th>국민이 할 일</th><th>처리결과</th></tr></thead><tbody>${item.services.map(s=>`<tr><td><strong>${s.name}</strong><br><span class="tag">${s.status}</span></td><td>${s.agency}</td><td>${s.channel || '해당 서비스 공식 안내에서 확인'}</td><td>${s.action || s.note || '신청 필요 여부 확인'}</td><td>${s.result || '처리 결과 개별 확인'}</td></tr>`).join('')}</tbody></table></div>`)}
+    ${section('연결 서비스', item.slug === 'birth' ? '기본 절차와 조건부 지원을 나누고, 각 서비스의 적용조건부터 공식 원문까지 표시합니다.' : '서비스마다 책임기관·신청창구·해야 할 일·처리결과를 분리했습니다.', renderServices(item))}
     ${section('국민 여정', '기관 조직도가 아니라 당사자가 밟는 순서로 재구성했습니다.', `<div class="flow">${item.steps.map(s=>`<div class="flow-step"><span class="order">STEP ${String(s.order).padStart(2,'0')}</span><h3>${s.action}</h3><p>${s.actor}</p><small>산출 · ${s.output}</small></div>`).join('')}</div>`)}
     ${deepDive ? renderDeepDive(deepDive) : ''}
     ${section('서비스 진단', '반복 제출과 절차 단절을 데이터·AI 관점에서 봅니다.', `<div class="diagnosis"><div class="diag"><h3>↻ 다시 내는 정보</h3><ul>${item.reuseCandidates.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>△ 막히는 지점</h3><ul>${item.friction.map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="diag"><h3>✦ AI·제도개선 후보</h3><ul>${item.aiOpportunities.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`)}
@@ -90,6 +90,16 @@ function renderDetail(slug) {
   </article>`;
   tray.hidden = true;
   scrollTo(0,0);
+}
+
+function renderServices(item) {
+  if (item.slug !== 'birth') {
+    return `<div class="service-table-wrap"><table class="service-table detailed-services"><thead><tr><th>서비스</th><th>책임기관</th><th>신청창구</th><th>국민이 할 일</th><th>처리결과</th></tr></thead><tbody>${item.services.map(s=>`<tr><td><strong>${s.name}</strong><br><span class="tag">${s.status}</span></td><td>${s.agency}</td><td>${s.channel || '해당 서비스 공식 안내에서 확인'}</td><td>${s.action || s.note || '신청 필요 여부 확인'}</td><td>${s.result || '처리 결과 개별 확인'}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  const universal = item.services.filter(s => s.audiences.includes('모든 출생가구'));
+  const conditional = item.services.filter(s => !s.audiences.includes('모든 출생가구'));
+  const cards = (services) => `<div class="service-cards">${services.map(s=>`<article class="service-card"><div class="service-card-head"><div><span class="eyebrow">${s.status}</span><h3>${s.name}</h3></div><div class="audience-tags">${s.audiences.map(a=>`<span>${a}</span>`).join('')}</div></div><dl><div><dt>적용조건</dt><dd>${s.requirement}</dd></div><div><dt>책임기관</dt><dd>${s.agency}</dd></div><div><dt>신청창구</dt><dd>${s.channel}</dd></div><div><dt>국민이 할 일</dt><dd>${s.action}</dd></div><div><dt>처리결과</dt><dd>${s.result}</dd></div></dl><a class="official-link" href="${s.sourceUrl}" target="_blank" rel="noreferrer">공식 원문 확인 ↗</a></article>`).join('')}</div>`;
+  return `<div class="service-group"><div class="group-title"><span>01</span><div><h3>모든 출생가구가 확인</h3><p>출생신고 후 기본적으로 확인할 신분·급여·건강·생활비 지원입니다.</p></div></div>${cards(universal)}</div><div class="service-group conditional"><div class="group-title"><span>02</span><div><h3>상황별 추가 확인</h3><p>어린이집 이용, 다자녀, 저소득, 장애, 한부모, 미숙아 등 해당 조건일 때 추가합니다.</p></div></div>${cards(conditional)}</div>`;
 }
 
 function section(title, intro, body) { return `<section class="section"><div class="section-grid"><div><h2>${title}</h2><p class="section-intro">${intro}</p></div><div>${body}</div></div></section>`; }

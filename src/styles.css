@@ -89,6 +89,24 @@ h1 { margin:16px 0 24px; max-width:850px; font-size:clamp(42px,6vw,76px); line-h
 .detailed-services th:nth-child(5) { width:19%; }
 .detailed-services td { font-size:14px; line-height:1.55; }
 .detailed-services .tag { margin-top:8px; }
+.service-group + .service-group { margin-top:48px; }
+.group-title { display:grid; grid-template-columns:48px 1fr; gap:16px; align-items:start; padding:18px 0; border-top:3px solid var(--cds-text); }
+.group-title > span { color:var(--cds-blue); font:600 13px 'IBM Plex Mono',monospace; }
+.group-title h3 { margin:0 0 4px; font-size:22px; }
+.group-title p { margin:0; color:var(--cds-muted); }
+.service-group.conditional .group-title { border-color:#8a3ffc; }
+.service-cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.service-card { display:flex; flex-direction:column; min-width:0; border:1px solid var(--cds-border); background:#fff; }
+.service-card-head { padding:20px; min-height:142px; background:var(--cds-layer); }
+.service-card-head h3 { margin:8px 0 14px; font-size:21px; line-height:1.3; }
+.audience-tags { display:flex; flex-wrap:wrap; gap:6px; }
+.audience-tags span { padding:3px 8px; border-radius:999px; background:#e8daff; color:#6929c4; font-size:12px; }
+.service-card dl { margin:0; }
+.service-card dl > div { display:grid; grid-template-columns:84px 1fr; border-top:1px solid #e0e0e0; }
+.service-card dt,.service-card dd { margin:0; padding:11px 12px; font-size:13px; }
+.service-card dt { color:var(--cds-muted); background:#f8f8f8; font-weight:600; }
+.service-card dd { overflow-wrap:anywhere; }
+.official-link { margin-top:auto; padding:14px 20px; border-top:1px solid var(--cds-border); text-decoration:none; font-weight:600; }
 .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--cds-border); }
 .flow-step { min-height:190px; padding:20px; background:#fff; }
 .flow-step .order { color:var(--cds-blue); font:500 12px 'IBM Plex Mono',monospace; }
@@ -139,6 +157,7 @@ footer p { max-width:700px; }
   .section-grid { grid-template-columns:1fr; gap:24px; }
   .flow { grid-template-columns:repeat(2,1fr); }
   .diagnosis { grid-template-columns:1fr; }
+  .service-cards { grid-template-columns:1fr; }
   .deep-meta { grid-template-columns:1fr; }
 }
 @media(max-width:620px) {
