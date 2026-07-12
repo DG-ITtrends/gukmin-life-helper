@@ -74,7 +74,7 @@ function renderDetail(slug) {
   const item = journeys.find((journey) => journey.slug === slug);
   if (!item) { location.hash=''; return; }
   document.title = `${item.title} | 국민생활도우미`;
-  const deepDive = deepDives[item.slug];
+  const deepDive = deepDives[item.slug] || item.deepDive;
   root.innerHTML = `<article class="detail-shell">
     <nav class="detail-nav"><button class="back" onclick="location.hash=''">← 전체 사건</button><span>CASE ${item.icon} / ${journeys.length}</span></nav>
     <header class="detail-hero">
