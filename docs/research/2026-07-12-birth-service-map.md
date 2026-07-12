@@ -18,11 +18,12 @@
 | 첫만남이용권 | 첫째 200만 원, 둘째 이상 300만 원 | 시군구·행정복지센터·복지로 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711020100) |
 | 부모급여 | 0세 월 100만 원, 1세 월 50만 원 | 시군구·행정복지센터·복지로 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711030600) |
 | 아동수당 | 2026년 만 9세 미만, 지역별 월 10만~13만 원 | 시군구·행정복지센터·복지로 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711030100) |
-| 건강보험 자격·피부양자 | 출생신고 후 자격 반영 확인, 직장가입자 피부양자 신고 | 국민건강보험공단·직장 담당자 | [공단 신고서](https://www.nhis.or.kr/static/html/wbdb/f/wbdbf0301.html) |
-| 국가예방접종 | 연령별 일정, 보건소·위탁기관 | 질병관리청·보건소 | [예방접종도우미](https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuLv=1&menuCd=115) |
+| 건강보험 자격·피부양자 | 출생신고 후 자격 반영 확인, 직장가입자 피부양자는 원칙적으로 자격변동일부터 90일 이내 신고 | 국민건강보험공단·직장 담당자 | [공단 안내](https://www.nhis.or.kr/nhis/policy/wbhada07300m01.do) |
+| 국가예방접종 | 연령별 일정에 따라 국가지원 백신 19종 | 질병관리청·보건소·위탁기관 | [예방접종도우미](https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuLv=1&menuCd=131) |
 | 영유아 건강검진 | 1차 생후 14~35일 | 국민건강보험공단·지정검진기관 | [공단 안내](https://www.nhis.or.kr/static/html/wbma/c/wbhaca04800_2025.pdf) |
 | 출산가구 전기요금 할인 | 출생일로부터 3년 미만 영아 가구, 30%·월 1만6천 원 한도 | 한국전력·한전ON·123 | [한국전력](https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00209.jsp) |
-| 선천성대사이상·난청 검사 | 선별검사와 이상 시 확진·환아관리 | 보건소·검사의료기관 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711020200) |
+| 선천성대사이상 검사 | 선별검사 및 이상 시 확진·환아관리 | 보건소·검사의료기관 | [e보건소](https://www.e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00002&menuId=200012) |
+| 선천성 난청검사 | 선별·확진검사 및 기준 충족 시 보청기 지원 | 보건소·검사의료기관 | [e보건소](https://e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00004&menuId=200014) |
 
 ## 2. 돌봄 선택에 따른 서비스
 
@@ -38,13 +39,16 @@
 | 조건 | 서비스 | 핵심 구분 | 공식 근거 |
 |---|---|---|---|
 | 둘째 이상 | 첫만남이용권 차등 | 둘째 이상 300만 원 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711020100) |
-| 3자녀 이상·장애·저소득 | 도시가스요금 경감 | 출생 자체가 아니라 사회적 배려대상 자격에 따른 경감 | [한국가스공사](https://www.kogas.or.kr/site/koGas/1020408010000) |
+| 3자녀 이상·장애·저소득 | 도시가스요금 경감 | 다자녀 기준 취사 월 420원, 취사난방 동절기 월 1만8천 원 등 자격·계절별 경감 | [한국가스공사](https://www.kogas.or.kr/site/koGas/1020408010000) |
 | 저소득 등 | 기저귀·조제분유 | 기저귀 월 9만 원, 조제분유 월 11만 원; 60일 이내 신청 시 24개월 전 기간 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711020100) |
-| 기초생활수급 | 해산급여 | 첫만남이용권 등과 별도 급여 | [정부24](https://www.gov.kr/mw/AA020InfoCappView.do?HighCtgCD=A05003&CappBizCD=14600000278) |
-| 등록 여성장애인 | 출산비용 | 산모의 장애등록을 기준으로 하는 지원 | [보건복지부](https://mohw.go.kr/menu.es?mid=a10710060800) |
+| 기초생활수급 | 해산급여 | 태아 1명당 70만 원, 첫만남이용권 등과 별도 급여 | [정부24](https://www.gov.kr/mw/AA020InfoCappView.do?HighCtgCD=A05003&CappBizCD=14600000278) |
+| 등록 여성장애인 | 출산비용 | 태아 1명당 120만 원, 산모의 장애등록을 기준으로 지원 | [보건복지부](https://mohw.go.kr/menu.es?mid=a10710060800) |
 | 장애가 확인된 아동 | 장애아동수당·장애아가족 양육지원 | 아동 장애등록·소득·장애정도에 따른 별도 지원 | [보건복지부](https://mohw.go.kr/menu.es?mid=a10710030200) |
 | 저소득 한부모 | 아동양육비 | 일반 저소득 한부모 월 23만 원 등 유형별 차등 | [성평등가족부](https://www.mogef.go.kr/cs/opf/cs_opf_f921.do) |
-| 미숙아·선천성이상아 | 의료비 | 2024년부터 소득과 관계없이 공식 요건 충족 시 지원 | [보건복지부](https://www.mohw.go.kr/menu.es?mid=a10711020200) |
+| 미숙아·선천성이상아 | 의료비 | 최종 퇴원일부터 6개월 이내, 미숙아 300만~1,000만 원·선천성이상아 500만 원 한도 | [e보건소](https://www.e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00001&menuId=200011) |
+| 검사 이상 신생아 | 선천성대사이상 검사·환아관리 | 검사비는 출생일부터 1년 이내, 확진검사 7만 원 한도와 환아관리 | [e보건소](https://www.e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00002&menuId=200012) |
+| 난청 의심·확진 아동 | 난청검사·보청기 | 검사비는 출생일부터 1년 이내, 기준 충족 시 보청기 지원 | [e보건소](https://e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00004&menuId=200014) |
+| 고위험 임신질환 산모 | 의료비 | 분만일부터 6개월 이내, 전액본인부담·비급여 90%·300만 원 한도 | [e보건소](https://e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=PG00002&menuId=200010) |
 
 ## 설계 결론
 

@@ -10,7 +10,7 @@ const service = ({ name, audiences, requirement, agency, channel, action, result
   status: '신청'
 });
 
-export const birthServices = [
+const rawBirthServices = [
   service({
     name: '출생신고',
     audiences: ['모든 출생가구'],
@@ -69,7 +69,7 @@ export const birthServices = [
     channel: '국민건강보험공단 지사·홈페이지·The건강보험 또는 직장 건강보험 담당자',
     action: '신생아 주민등록번호 발급 후 자격 반영을 조회하고 미반영 시 피부양자 자격취득 신고',
     result: '신생아 건강보험 자격·피부양자 취득일 확정',
-    sourceUrl: 'https://www.nhis.or.kr/static/html/wbdb/f/wbdbf0301.html'
+    sourceUrl: 'https://www.nhis.or.kr/nhis/policy/wbhada07300m01.do'
   }),
   service({
     name: '국가예방접종',
@@ -78,8 +78,8 @@ export const birthServices = [
     agency: '질병관리청·관할 보건소',
     channel: '보건소 또는 국가예방접종 위탁의료기관',
     action: '예방접종도우미에서 일정과 위탁기관을 확인해 B형간염·BCG 등 접종',
-    result: '국가예방접종 비용 지원 및 접종기록 등록',
-    sourceUrl: 'https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuLv=1&menuCd=115'
+    result: '국가지원 백신 19종 접종비 지원 및 접종기록 등록',
+    sourceUrl: 'https://nip.kdca.go.kr/irhp/infm/goVcntInfo.do?menuLv=1&menuCd=131'
   }),
   service({
     name: '영유아 건강검진',
@@ -109,7 +109,7 @@ export const birthServices = [
     channel: '읍·면·동 행정복지센터 또는 복지로',
     action: '어린이집 입소일 전에 보육료 자격으로 변경 신청하고 국민행복카드 준비',
     result: '연령·보육유형에 따른 어린이집 보육료를 국민행복카드로 지원',
-    sourceUrl: 'https://www.bokjiro.go.kr/ssis-tbu/cms/pc/customer/notice/1209821_1141.html'
+    sourceUrl: 'https://www.bokjiro.go.kr/ssis-tbu/twataa/wlfareInfo/moveTWAT52011M.do?wlfareInfoId=WLF00003250'
   }),
   service({
     name: '아이돌봄서비스',
@@ -129,7 +129,7 @@ export const birthServices = [
     channel: '한전ON·고객센터 123·지사·아파트 관리사무소 또는 행복출산 원스톱서비스',
     action: '전기사용 고객번호와 출생아 주민등록 정보를 제출해 할인 신청',
     result: '월 전기요금 30% 할인, 월 1만6천 원 한도',
-    sourceUrl: 'https://cyber.kepco.co.kr/ckepco/front/jsp/CY/H/C/CYHCHP00209.jsp'
+    sourceUrl: 'https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=17410000001'
   }),
   service({
     name: '도시가스요금 경감',
@@ -138,13 +138,13 @@ export const birthServices = [
     agency: '거주지역 도시가스회사 요금경감 담당부서',
     channel: '지역 도시가스회사·주민센터·정부24 또는 도시가스요금 경감 대신신청',
     action: '도시가스 고객번호와 신청서를 제출하고, 다자녀는 가족관계자료·장애/저소득은 해당 자격정보로 확인',
-    result: '대상 유형과 계절에 따른 정부 고시 기준으로 도시가스요금 경감',
+    result: '다자녀 기준 취사 월 420원, 취사난방 동절기 월 1만8천 원·그 밖의 달 월 2,470원 등 유형별 경감',
     sourceUrl: 'https://www.kogas.or.kr/site/koGas/1020408010000'
   }),
   service({
     name: '저소득층 기저귀·조제분유 지원',
     audiences: ['저소득', '한부모', '장애가구'],
-    requirement: '0~24개월 영아를 둔 기초생활·차상위·한부모 등 기준 충족 가구; 조제분유는 추가 요건',
+    requirement: '0~23개월 영아를 둔 기초생활·차상위·한부모 또는 중위소득 80% 이하 장애인가구·2자녀 이상 가구; 조제분유는 추가 요건',
     agency: '영아 주소지 관할 시·군·구 보건소 모자보건 담당부서',
     channel: '보건소·읍면동 행정복지센터 또는 복지로',
     action: '출생 후 60일 이내 신청하면 24개월 전 기간 지원 가능하므로 자격서류와 함께 신청',
@@ -158,7 +158,7 @@ export const birthServices = [
     agency: '산모 주소지 관할 시·군·구 기초생활보장 담당부서',
     channel: '읍·면·동 행정복지센터 또는 정부24 행복출산 원스톱서비스',
     action: '해산급여 지원신청서와 출생 또는 출산예정 사실 확인자료 제출',
-    result: '출산한 수급자에게 해산급여 지급; 쌍둥이 등 추가 출생아는 출생아별 산정',
+    result: '태아 1명당 70만 원, 쌍둥이 140만 원 등 태아 수에 따라 지급',
     sourceUrl: 'https://www.gov.kr/mw/AA020InfoCappView.do?HighCtgCD=A05003&CappBizCD=14600000278'
   }),
   service({
@@ -168,7 +168,7 @@ export const birthServices = [
     agency: '주소지 관할 시·군·구 장애인복지 담당부서',
     channel: '읍·면·동 행정복지센터 또는 복지로',
     action: '신분증·통장사본과 출산 또는 유산·사산 확인서류 제출',
-    result: '태아 1명 기준 출산비용 현금 지원',
+    result: '태아 1명당 120만 원 출산비용 현금 지원',
     sourceUrl: 'https://mohw.go.kr/menu.es?mid=a10710060800'
   }),
   service({
@@ -189,7 +189,7 @@ export const birthServices = [
     channel: '읍·면·동 행정복지센터 또는 복지로',
     action: '한부모가족 지원 신청서와 소득·재산 조사 동의자료 제출',
     result: '일반 저소득 한부모 아동 월 23만 원 등 가구유형별 양육비 지급',
-    sourceUrl: 'https://www.mogef.go.kr/cs/opf/cs_opf_f921.do'
+    sourceUrl: 'https://www.mogef.go.kr/sp/fam/sp_fam_f006.do'
   }),
   service({
     name: '미숙아·선천성이상아 의료비 지원',
@@ -198,8 +198,8 @@ export const birthServices = [
     agency: '영아 주민등록 주소지 관할 시·군·구 보건소 모자보건 담당부서',
     channel: 'e보건소 공공보건포털 또는 관할 보건소',
     action: '퇴원 후 진료비 영수증·진료비 세부내역·진단서 등 제출',
-    result: '미숙아는 출생체중별 상한, 선천성이상아는 공식 상한 내 전액본인부담·비급여 의료비 지원',
-    sourceUrl: 'https://www.mohw.go.kr/menu.es?mid=a10711020200'
+    result: '전액본인부담·비급여 의료비를 미숙아 출생체중별 300만~1,000만 원, 선천성이상아 500만 원 한도 지원',
+    sourceUrl: 'https://www.e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00001&menuId=200011'
   }),
   service({
     name: '산모·신생아 건강관리 서비스',
@@ -209,16 +209,64 @@ export const birthServices = [
     channel: '관할 보건소·읍면동 행정복지센터 또는 복지로',
     action: '출산예정일·출산일과 건강보험료 자료를 제출해 바우처 신청',
     result: '건강관리사가 가정을 방문해 산모 회복·신생아 돌봄 지원',
-    sourceUrl: 'https://www.gov.kr/mw/AA020InfoCappView.do?CappBizCD=13520000043'
+    sourceUrl: 'https://www.mohw.go.kr/board.es?mid=a10409020000&bid=0026&list_no=1488490&act=view'
   }),
   service({
-    name: '선천성대사이상·난청 검사 및 환아관리',
+    name: '선천성대사이상 검사·환아관리',
     audiences: ['모든 출생가구', '검사 이상 신생아'],
     requirement: '신생아 선별검사 대상 또는 검사 결과 확진검사·환아관리 요건 충족',
     agency: '영아 주민등록 주소지 관할 시·군·구 보건소 모자보건 담당부서',
     channel: '분만·검사 의료기관, e보건소 또는 관할 보건소',
-    action: '신생아 선별검사를 받고 이상 소견 시 기한 내 확진검사·보청기·환아관리 지원 신청',
-    result: '검사비 본인부담 지원 및 확진 환아 의료·특수식이·보청기 등 기준별 지원',
-    sourceUrl: 'https://www.mohw.go.kr/menu.es?mid=a10711020200'
+    action: '선별검사를 받고 이상 소견 시 확진검사와 환아관리 지원 신청',
+    result: '외래 선별검사 본인부담금, 확진검사비 7만 원 한도 및 환아 특수식이·일부 의료비 지원',
+    sourceUrl: 'https://www.e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00002&menuId=200012'
+  }),
+  service({
+    name: '선천성 난청검사·보청기 지원',
+    audiences: ['모든 출생가구', '난청 의심·확진 아동'],
+    requirement: '신생아 청각선별검사·확진검사 대상 또는 만 12세 미만 난청 환아 중 보청기 기준 충족',
+    agency: '영아 주민등록 주소지 관할 시·군·구 보건소 모자보건 담당부서',
+    channel: '검사 의료기관, e보건소 또는 관할 보건소',
+    action: '청각선별검사를 받고 재검 소견 시 확진검사, 난청 확진 시 보건소 심사 후 보청기 구입',
+    result: '선별검사 본인부담금, 확진검사비 7만 원 한도 및 기준 충족 시 보청기 지원',
+    sourceUrl: 'https://e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=IM00004&menuId=200014'
+  }),
+  service({
+    name: '고위험 임산부 의료비 지원',
+    audiences: ['고위험 임신질환 산모'],
+    requirement: '19대 고위험 임신질환으로 입원치료한 임산부; 소득과 관계없이 지원',
+    agency: '산모 주민등록 주소지 관할 시·군·구 보건소 모자보건 담당부서',
+    channel: 'e보건소 또는 관할 보건소',
+    action: '분만 후 입퇴원확인서·진단서·진료비 영수증과 세부내역 제출',
+    result: '입원치료비 중 전액본인부담·비급여의 90%, 1명당 300만 원 한도 지원',
+    sourceUrl: 'https://e-health.go.kr/gh/caSrvcGud/selectMdclSupGudInfo.do?heBiz=PG00002&menuId=200010'
   })
 ];
+
+const deadlines = {
+  '출생신고': '출생 후 1개월 이내',
+  '행복출산 원스톱서비스': '출생신고와 동시에 또는 출생신고 후 가능한 빨리',
+  '첫만남이용권': '출생 후 신청; 이용기한은 출생일 기준 공식 안내 확인',
+  '부모급여': '출생 후 60일 이내 신청 권장(소급 적용 범위 확인)',
+  '아동수당': '출생 후 60일 이내 신청 권장(출생월 소급 적용 범위 확인)',
+  '건강보험 자격 확인·피부양자 신고': '원칙적으로 자격변동일부터 90일 이내 신고해야 취득일 소급',
+  '국가예방접종': '백신별 표준접종시기 내',
+  '영유아 건강검진': '1차 생후 14~35일, 이후 월령별 검진기간 내',
+  '어린이집 입소대기': '연중 수시; 필요한 입소시점보다 미리 신청',
+  '어린이집 보육료': '신청일부터 지원되므로 어린이집 입소 전 신청 권장',
+  '아이돌봄서비스': '수시 신청; 정부지원 판정 후 이용 신청',
+  '출산가구 전기요금 할인': '신청월부터 적용되므로 출생신고 후 즉시 권장, 출생 3년까지',
+  '도시가스요금 경감': '상시 신청; 신청 다음 날부터 일할 적용',
+  '저소득층 기저귀·조제분유 지원': '만 2세 전날까지; 출생 후 60일 이내 신청 시 24개월 전 기간 지원',
+  '기초생활수급자 해산급여': '출산·유산·사산 후 상시 신청',
+  '여성장애인 출산비용 지원': '연중 신청; 전년도 미수급분은 예산 범위 확인',
+  '장애아동수당·장애아가족 양육지원': '장애등록 및 자격 충족 후 신청',
+  '한부모가족 아동양육비': '연중 신청, 신청월부터 지급',
+  '미숙아·선천성이상아 의료비 지원': '최종 퇴원일부터 6개월 이내',
+  '산모·신생아 건강관리 서비스': '출산예정일 40일 전부터 출산일 60일 후까지; 미숙아 등 입원 시 퇴원일부터 30일',
+  '선천성대사이상 검사·환아관리': '검사비는 출생일부터 1년 이내, 환아관리는 보건소 등록 후 기준별 지원',
+  '선천성 난청검사·보청기 지원': '검사비는 출생일부터 1년 이내; 보청기는 보건소 심사·확인 후 구입',
+  '고위험 임산부 의료비 지원': '분만일부터 6개월 이내'
+};
+
+export const birthServices = rawBirthServices.map((entry) => ({ ...entry, deadline: deadlines[entry.name] }));
