@@ -1,4 +1,4 @@
-const s = (name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl) => ({ name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl, status: '신청' });
+const s = (name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl) => ({ name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl, status: '조건부' });
 
 export const jobLossServices = [
   s('고용보험 이직확인서 처리 확인',['고용보험 근로자'],'사업주가 제출한 피보험자격 상실신고·이직확인서의 이직사유와 임금정보 확인','퇴직 직후 확인','근로복지공단·고용노동부','고용24 이직확인서 처리여부 조회','처리 여부와 이직사유가 사실과 다르면 사업주·관할기관에 정정 요청','구직급여 심사에 필요한 이직정보 확정','https://www.work24.go.kr/'),

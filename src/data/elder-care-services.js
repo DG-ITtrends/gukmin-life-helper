@@ -1,4 +1,4 @@
-const s = (name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl) => ({ name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl, status: '신청' });
+const s = (name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl) => ({ name, audiences, requirement, deadline, agency, channel, action, result, sourceUrl, status: '조건부' });
 
 export const elderCareServices = [
   s('장기요양 인정 신청',['65세 이상','노인성 질병이 있는 65세 미만'],'6개월 이상 혼자 일상생활 수행이 어렵다고 예상되는 사람','돌봄 필요가 지속되면 즉시; 입원 중이면 퇴원계획과 함께 준비','국민건강보험공단 장기요양 담당','공단 지사·노인장기요양보험 누리집·우편·팩스','신청서와 신분·대리관계 자료 제출, 의사소견서 제출기한 확인','공단 인정조사와 등급판정 절차 개시','https://www.nhis.or.kr/static/html/wbda/c/wbdac02.html'),

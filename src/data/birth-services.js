@@ -7,7 +7,7 @@ const service = ({ name, audiences, requirement, agency, channel, action, result
   action,
   result,
   sourceUrl,
-  status: '신청'
+  status: '조건부'
 });
 
 const rawBirthServices = [

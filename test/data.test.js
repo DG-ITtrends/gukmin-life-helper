@@ -51,7 +51,7 @@ test('모든 사건은 서비스·단계·진단·공식 출처를 가진다', (
 });
 
 test('단계 순서는 1부터 연속되고 서비스 상태는 허용값만 사용한다', () => {
-  const allowed = new Set(['확인', '신청', '연계']);
+  const allowed = new Set(['필수', '조건부', '사후구제', '대체상품', '정보조회']);
   for (const item of journeys) {
     assert.deepEqual(item.steps.map(x => x.order), item.steps.map((_, i) => i + 1));
     for (const service of item.services) assert.ok(allowed.has(service.status));
