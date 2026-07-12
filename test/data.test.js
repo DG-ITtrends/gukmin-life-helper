@@ -8,6 +8,12 @@ test('서로 다른 50개 생활사건을 제공한다', () => {
   assert.equal(new Set(journeys.map(x => x.slug)).size, 50);
 });
 
+test('50개 사건은 8개 표준 생활분야로 탐색한다', () => {
+  const allowed = new Set(['가족·돌봄','교육·청년','건강·복지','일자리·사업','주거·재산','금융·세금','안전·권리','행정·해외']);
+  assert.ok(new Set(journeys.map(x => x.category)).size <= 8);
+  for (const item of journeys) assert.ok(allowed.has(item.category), `${item.slug}: ${item.category}`);
+});
+
 test('상세화면 전체 사건 수는 데이터 개수를 사용한다', () => {
   const mainSource = readFileSync(new URL('../src/main.js', import.meta.url), 'utf8');
   assert.doesNotMatch(mainSource, /\/ 10<\/span>/);

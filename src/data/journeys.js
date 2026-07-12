@@ -112,12 +112,25 @@ const baseJourneys = [
 ];
 
 const existingSlugs = new Set(baseJourneys.map(item => item.slug));
-export const journeys = [
+const assembledJourneys = [
   ...baseJourneys.map(item => expandedBySlug[item.slug] ? { ...item, ...expandedBySlug[item.slug] } : item),
   ...expandedCases.filter(item => !existingSlugs.has(item.slug)),
   ...additionalCases,
   ...cases31to50
 ];
+
+const canonicalCategory = (category) => {
+  if (/교육|청년/.test(category)) return '교육·청년';
+  if (/주거|재산/.test(category)) return '주거·재산';
+  if (/금융|세금/.test(category)) return '금융·세금';
+  if (/일자리|사업|노후/.test(category)) return '일자리·사업';
+  if (/건강|복지/.test(category)) return '건강·복지';
+  if (/안전|권리|국방|보훈/.test(category)) return '안전·권리';
+  if (/행정|해외/.test(category)) return '행정·해외';
+  return '가족·돌봄';
+};
+
+export const journeys = assembledJourneys.map(item => ({ ...item, category: canonicalCategory(item.category) }));
 
 for (const item of journeys) {
   const detail = deepDives[item.slug];
