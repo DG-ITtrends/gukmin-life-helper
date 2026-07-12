@@ -1,6 +1,8 @@
+import { expandedDeepDives } from './expanded-cases.js';
+
 const official = (name, url) => ({ name, url, status: '공식 원문 확인' });
 
-export const deepDives = {
+const baseDeepDives = {
   birth: {
     depth: 'official-deep-dive',
     verificationScope: '2026-07-12 기준 정부24·보건복지부·국가법령정보센터 공식 원문과 안내에서 대상·기한·지원수준을 확인했습니다.',
@@ -107,3 +109,5 @@ export const deepDives = {
     ]
   }
 };
+
+export const deepDives = { ...expandedDeepDives, ...baseDeepDives };

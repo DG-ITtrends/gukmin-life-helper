@@ -2,12 +2,13 @@ import { deepDives } from './deep-dives.js';
 import { birthServices } from './birth-services.js';
 import { jobLossServices } from './job-loss-services.js';
 import { elderCareServices } from './elder-care-services.js';
+import { expandedCases, expandedBySlug } from './expanded-cases.js';
 
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
 const step = (order, actor, action, output) => ({ order, actor, action, output });
 
-export const journeys = [
+const baseJourneys = [
   {
     slug: 'birth', icon: '01', title: '아이가 태어났어요', category: '가족·돌봄', summary: '출생신고부터 첫만남이용권·부모급여·아동수당까지 담당기관과 신청 결과를 서비스별로 안내합니다.',
     asOf: '2026-07-12',
@@ -106,6 +107,12 @@ export const journeys = [
     documents: ['여권 사본·신원정보', '현지 신고번호', '항공·숙소·보험 정보'], reuseCandidates: ['여권·출입국 정보', '여행자보험 정보', '긴급연락처'], friction: ['시차·언어·관할 공관을 모르는 상태에서 초기 대응이 지연될 수 있음'], aiOpportunities: ['현재 위치 기반 공관·긴급번호 안내', '다국어 상황 설명문 생성'],
     sources: [source('외교부 해외안전여행', 'https://www.0404.go.kr/'), source('영사민원24', 'https://consul.mofa.go.kr/')], disclaimer: '영사조력에는 현지 법령과 국제관계에 따른 범위·한계가 있습니다.'
   }
+];
+
+const existingSlugs = new Set(baseJourneys.map(item => item.slug));
+export const journeys = [
+  ...baseJourneys.map(item => expandedBySlug[item.slug] ? { ...item, ...expandedBySlug[item.slug] } : item),
+  ...expandedCases.filter(item => !existingSlugs.has(item.slug))
 ];
 
 for (const item of journeys) {

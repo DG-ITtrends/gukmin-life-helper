@@ -76,7 +76,7 @@ function renderDetail(slug) {
   document.title = `${item.title} | 국민생활도우미`;
   const deepDive = deepDives[item.slug];
   root.innerHTML = `<article class="detail-shell">
-    <nav class="detail-nav"><button class="back" onclick="location.hash=''">← 전체 사건</button><span>CASE ${item.icon} / 10</span></nav>
+    <nav class="detail-nav"><button class="back" onclick="location.hash=''">← 전체 사건</button><span>CASE ${item.icon} / ${journeys.length}</span></nav>
     <header class="detail-hero">
       <div><span class="eyebrow">${item.category} · LIFE EVENT</span><h1>${item.title}</h1><p>${item.summary}</p></div>
       <div class="trust-box"><b>근거 상태</b>${deepDive ? '공식문서 심화 대조 · 개인별 판정 제외' : '공식 안내 연결 · 내용 전문가 검수 전'}<br><small>기준일 ${item.asOf}</small></div>

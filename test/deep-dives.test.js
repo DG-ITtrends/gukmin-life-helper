@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { deepDives } from '../src/data/deep-dives.js';
 
-test('대표 3개 사건에 공식문서 기반 심화정보가 있다', () => {
-  assert.deepEqual(Object.keys(deepDives).sort(), ['birth', 'elder-care', 'job-loss']);
+test('20개 사건에 공식문서 기반 심화정보가 있다', () => {
+  assert.equal(Object.keys(deepDives).length, 20);
   for (const detail of Object.values(deepDives)) {
     assert.ok(detail.officialCheckpoints.length >= 4);
     assert.ok(detail.deadlines.length >= 1);
