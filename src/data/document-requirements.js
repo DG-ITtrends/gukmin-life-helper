@@ -13,6 +13,9 @@ import { documentRequirements46to50 } from './document-requirements-46-50.js';
 import { documentRequirementsStartup01to03 } from './document-requirements-startup-01-03.js';
 import { documentRequirementsStartup04to07 } from './document-requirements-startup-04-07.js';
 import { documentRequirementsStartup08to10 } from './document-requirements-startup-08-10.js';
+import { documentRequirementsDebt01to02 } from './document-requirements-debt-01-02.js';
+import { documentRequirementsDebt03to04 } from './document-requirements-debt-03-04.js';
+import { documentRequirementsDebt05to06 } from './document-requirements-debt-05-06.js';
 
 export const documentRequirements = {
   ...documentRequirements01to02,
@@ -30,6 +33,9 @@ export const documentRequirements = {
   ...documentRequirementsStartup01to03,
   ...documentRequirementsStartup04to07,
   ...documentRequirementsStartup08to10,
+  ...documentRequirementsDebt01to02,
+  ...documentRequirementsDebt03to04,
+  ...documentRequirementsDebt05to06,
 };
 
 export function attachDocumentRequirements(journey) {

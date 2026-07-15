@@ -9,6 +9,9 @@ import { attachDocumentRequirements } from './document-requirements.js';
 import { startupCases01to03 } from './startup-cases-01-03.js';
 import { startupCases04to07 } from './startup-cases-04-07.js';
 import { startupCases08to10 } from './startup-cases-08-10.js';
+import { debtCases01to02 } from './debt-cases-01-02.js';
+import { debtCases03to04 } from './debt-cases-03-04.js';
+import { debtCases05to06 } from './debt-cases-05-06.js';
 
 const source = (name, url) => ({ name, url, status: '공식 원문 연결' });
 const service = (name, agency, status = '확인', note = '') => ({ name, agency, status, note });
@@ -124,7 +127,12 @@ const assembledJourneys = [
 ];
 
 const startupSubcases = [...startupCases01to03, ...startupCases04to07, ...startupCases08to10];
-const journeysWithStartupSubcases = assembledJourneys.flatMap(item => item.slug === 'startup' ? [item, ...startupSubcases] : [item]);
+const debtSubcases = [...debtCases01to02, ...debtCases03to04, ...debtCases05to06];
+const journeysWithSubcases = assembledJourneys.flatMap(item => {
+  if (item.slug === 'startup') return [item, ...startupSubcases];
+  if (item.slug === 'debt-crisis') return [item, ...debtSubcases];
+  return [item];
+});
 
 const canonicalCategory = (category) => {
   if (/교육|청년/.test(category)) return '교육·청년';
@@ -137,7 +145,7 @@ const canonicalCategory = (category) => {
   return '가족·돌봄';
 };
 
-export const journeys = journeysWithStartupSubcases.map(item => attachDocumentRequirements({
+export const journeys = journeysWithSubcases.map(item => attachDocumentRequirements({
   ...item,
   category: canonicalCategory(item.category),
   sources: item.sources || item.deepDive?.officialSources || [],

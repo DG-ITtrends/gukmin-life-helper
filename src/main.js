@@ -82,7 +82,7 @@ function renderDetail(slug) {
       <div class="trust-box"><b>근거 상태</b>${deepDive ? '공식문서 심화 대조 · 개인별 판정 제외' : '공식 안내 연결 · 내용 전문가 검수 전'}<br><small>기준일 ${item.asOf}</small></div>
     </header>
     <div class="detail-stats"><div><strong>${item.services.length}</strong><span>연결 서비스</span></div><div><strong>${item.steps.length}</strong><span>핵심 단계</span></div><div><strong>${item.reuseCandidates.length}</strong><span>재사용 후보정보</span></div><div><strong>${item.aiOpportunities.length}</strong><span>AI 개선기회</span></div></div>
-    ${item.slug === 'startup' ? renderStartupChoices() : ''}
+    ${item.slug === 'startup' ? renderStartupChoices() : item.slug === 'debt-crisis' ? renderDebtChoices() : ''}
     ${section('연결 서비스', item.services.every(s => s.requirement && s.deadline && s.sourceUrl) ? '기본 경로와 조건부 지원을 나누고, 적용조건·신청기한·책임기관·행동·결과·공식 원문을 표시합니다.' : '서비스마다 책임기관·신청창구·해야 할 일·처리결과를 분리했습니다.', renderServices(item))}
     ${section('국민 여정', '기관 조직도가 아니라 당사자가 밟는 순서로 재구성했습니다.', `<div class="flow">${item.steps.map(s=>`<div class="flow-step"><span class="order">STEP ${String(s.order).padStart(2,'0')}</span><h3>${s.action}</h3><p>${s.actor}</p><small>산출 · ${s.output}</small></div>`).join('')}</div>`)}
     ${deepDive ? renderDeepDive(deepDive) : ''}
@@ -114,6 +114,11 @@ function renderServices(item) {
 function renderStartupChoices() {
   const choices = journeys.filter(item => /^36-\d{2}$/.test(item.icon));
   return section('어떤 업종을 시작하나요?', '실제 영업형태를 선택하면 업종별 인허가·시설·교육·제출서류를 확인할 수 있습니다.', `<div class="startup-choices">${choices.map(item=>`<a href="#case/${item.slug}"><span>${item.icon}</span><strong>${item.title}</strong><small>${item.services.length}개 서비스 · 제출서류 ${item.documentCoverage.mapped}/${item.documentCoverage.total}</small></a>`).join('')}</div>`);
+}
+
+function renderDebtChoices() {
+  const choices = journeys.filter(item => /^19-\d{2}$/.test(item.icon));
+  return section('지금 어떤 상황인가요?', '연체기간·사업자 여부·상환능력·추심피해에 따라 가장 가까운 경로를 선택하세요. 여러 상황에 해당하면 공적 상담기관에서 전체 채무를 함께 진단받으세요.', `<div class="startup-choices">${choices.map(item=>`<a href="#case/${item.slug}"><span>${item.icon}</span><strong>${item.title}</strong><small>${item.services.length}개 서비스 · 제출서류 ${item.documentCoverage.mapped}/${item.documentCoverage.total}</small></a>`).join('')}</div>`);
 }
 
 function documentList(title, values) {
